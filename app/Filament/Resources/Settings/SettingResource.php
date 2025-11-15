@@ -105,65 +105,66 @@ class SettingResource extends Resource
                                     ]),
                             ]),
 
-                        Tabs\Tab::make('Hero Section')
-                            ->icon('heroicon-o-photo')
-                            ->schema([
-                                Section::make('Konten Hero')
-                                    ->schema([
-                                        TextInput::make('hero_badge')
-                                            ->label('Badge Hero')
-                                            ->placeholder('Contoh: #1 Layanan Travel Terpercaya')
-                                            ->maxLength(255)
-                                            ->helperText('Teks badge yang ditampilkan di atas judul')
-                                            ->columnSpanFull(),
-
-                                        TextInput::make('hero_title')
-                                            ->label('Judul Hero')
-                                            ->placeholder('Contoh: Perjalanan Nyaman, Aman & Terpercaya')
-                                            ->maxLength(255)
-                                            ->columnSpanFull(),
-
-                                        Textarea::make('hero_subtitle')
-                                            ->label('Subjudul Hero')
-                                            ->placeholder('Contoh: Layanan travel dan rental bus dengan armada modern...')
-                                            ->rows(3)
-                                            ->columnSpanFull(),
-
-                                        FileUpload::make('hero_image')
-                                            ->label('Gambar Hero')
-                                            ->image()
-                                            ->imageEditor()
-                                            ->disk('public')
-                                            ->directory('hero')
-                                            ->maxSize(4096)
-                                            ->helperText('Format: JPG, PNG. Maksimal 4MB. Ukuran disarankan: 1200x800px')
-                                            ->columnSpanFull(),
-                                    ]),
-
-                                Section::make('Statistik Hero')
-                                    ->description('Tampilkan statistik di hero section')
-                                    ->schema([
-                                        Repeater::make('hero_stats')
-                                            ->label('Statistik')
-                                            ->schema([
-                                                TextInput::make('number')
-                                                    ->label('Angka')
-                                                    ->placeholder('Contoh: 10000')
-                                                    ->required(),
-                                                TextInput::make('suffix')
-                                                    ->label('Suffix')
-                                                    ->placeholder('Contoh: +')
-                                                    ->maxLength(5),
-                                                TextInput::make('label')
-                                                    ->label('Label')
-                                                    ->placeholder('Contoh: Penumpang')
-                                                    ->required(),
-                                            ])
-                                            ->columns(3)
-                                            ->defaultItems(3)
-                                            ->columnSpanFull(),
-                                    ]),
-                            ]),
+                        // Hero Section tab dihide karena sudah menggunakan Hero Slider (Website > Hero Slider)
+                        // Tabs\Tab::make('Hero Section')
+                        //     ->icon('heroicon-o-photo')
+                        //     ->schema([
+                        //         Section::make('Konten Hero')
+                        //             ->schema([
+                        //                 TextInput::make('hero_badge')
+                        //                     ->label('Badge Hero')
+                        //                     ->placeholder('Contoh: #1 Layanan Travel Terpercaya')
+                        //                     ->maxLength(255)
+                        //                     ->helperText('Teks badge yang ditampilkan di atas judul')
+                        //                     ->columnSpanFull(),
+                        //
+                        //                 TextInput::make('hero_title')
+                        //                     ->label('Judul Hero')
+                        //                     ->placeholder('Contoh: Perjalanan Nyaman, Aman & Terpercaya')
+                        //                     ->maxLength(255)
+                        //                     ->columnSpanFull(),
+                        //
+                        //                 Textarea::make('hero_subtitle')
+                        //                     ->label('Subjudul Hero')
+                        //                     ->placeholder('Contoh: Layanan travel dan rental bus dengan armada modern...')
+                        //                     ->rows(3)
+                        //                     ->columnSpanFull(),
+                        //
+                        //                 FileUpload::make('hero_image')
+                        //                     ->label('Gambar Hero')
+                        //                     ->image()
+                        //                     ->imageEditor()
+                        //                     ->disk('public')
+                        //                     ->directory('hero')
+                        //                     ->maxSize(4096)
+                        //                     ->helperText('Format: JPG, PNG. Maksimal 4MB. Ukuran disarankan: 1200x800px')
+                        //                     ->columnSpanFull(),
+                        //             ]),
+                        //
+                        //         Section::make('Statistik Hero')
+                        //             ->description('Tampilkan statistik di hero section')
+                        //             ->schema([
+                        //                 Repeater::make('hero_stats')
+                        //                     ->label('Statistik')
+                        //                     ->schema([
+                        //                         TextInput::make('number')
+                        //                             ->label('Angka')
+                        //                             ->placeholder('Contoh: 10000')
+                        //                             ->required(),
+                        //                         TextInput::make('suffix')
+                        //                             ->label('Suffix')
+                        //                             ->placeholder('Contoh: +')
+                        //                             ->maxLength(5),
+                        //                         TextInput::make('label')
+                        //                             ->label('Label')
+                        //                             ->placeholder('Contoh: Penumpang')
+                        //                             ->required(),
+                        //                     ])
+                        //                     ->columns(3)
+                        //                     ->defaultItems(3)
+                        //                     ->columnSpanFull(),
+                        //             ]),
+                        //     ]),
 
                         Tabs\Tab::make('Features')
                             ->icon('heroicon-o-sparkles')

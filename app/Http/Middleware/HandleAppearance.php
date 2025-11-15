@@ -16,7 +16,13 @@ class HandleAppearance
      */
     public function handle(Request $request, Closure $next): Response
     {
-        View::share('appearance', $request->cookie('appearance') ?? 'system');
+        $isFilamentRequest = $request->routeIs('filament.*') || str_starts_with($request->path(), 'admin');
+
+        $appearance = $isFilamentRequest
+            ? $request->cookie('appearance') ?? 'system'
+            : 'light';
+
+        View::share('appearance', $appearance);
 
         return $next($request);
     }

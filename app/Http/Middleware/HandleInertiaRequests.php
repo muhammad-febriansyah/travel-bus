@@ -3,9 +3,9 @@
 namespace App\Http\Middleware;
 
 use App\Models\Setting;
+use App\Support\PublicStorageUrl;
 use Illuminate\Foundation\Inspiring;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
 use Inertia\Middleware;
 
 class HandleInertiaRequests extends Middleware
@@ -42,7 +42,7 @@ class HandleInertiaRequests extends Middleware
 
         $setting = Setting::first();
         $siteName = $setting?->site_name ?? config('app.name');
-        $favicon = $setting?->logo ? Storage::url($setting->logo) : null;
+        $favicon = PublicStorageUrl::make($setting?->logo);
 
         return [
             ...parent::share($request),

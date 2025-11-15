@@ -65,11 +65,11 @@ export default function Navbar({ setting }: NavbarProps) {
     };
 
     const navLinks = [
-        { href: '#home', label: 'Beranda' },
-        { href: '#routes', label: 'Rute' },
-        { href: '#armada', label: 'Armada' },
-        { href: '#features', label: 'Layanan' },
-        { href: '#contact', label: 'Kontak' },
+        { href: '/', label: 'Beranda', isHome: true },
+        { href: '#routes', label: 'Rute', isHome: false },
+        { href: '#armada', label: 'Armada', isHome: false },
+        { href: '#features', label: 'Layanan', isHome: false },
+        { href: '#contact', label: 'Kontak', isHome: false },
     ];
 
     return (
@@ -127,9 +127,11 @@ export default function Navbar({ setting }: NavbarProps) {
                                 <motion.a
                                     key={link.href}
                                     href={link.href}
-                                    onClick={(e) =>
-                                        scrollToSection(e, link.href)
-                                    }
+                                    onClick={(e) => {
+                                        if (!link.isHome) {
+                                            scrollToSection(e, link.href);
+                                        }
+                                    }}
                                     className="relative cursor-pointer px-4 py-2 text-sm font-medium text-gray-700 transition-colors hover:text-[#2547F9]"
                                     initial={{ opacity: 0, y: -20 }}
                                     animate={{ opacity: 1, y: 0 }}
@@ -163,7 +165,7 @@ export default function Navbar({ setting }: NavbarProps) {
                                     </Button>
                                 </motion.div>
                             </Link>
-                            <Link href="/admin/login" target="_blank">
+                            <a href="/admin/login" target="_blank">
                                 <motion.div
                                     whileHover={{ scale: 1.05 }}
                                     whileTap={{ scale: 0.95 }}
@@ -172,7 +174,7 @@ export default function Navbar({ setting }: NavbarProps) {
                                         Admin Login
                                     </Button>
                                 </motion.div>
-                            </Link>
+                            </a>
                         </div>
 
                         {/* Mobile Menu Button */}
@@ -225,9 +227,13 @@ export default function Navbar({ setting }: NavbarProps) {
                                         <motion.a
                                             key={link.href}
                                             href={link.href}
-                                            onClick={(e) =>
-                                                scrollToSection(e, link.href)
-                                            }
+                                            onClick={(e) => {
+                                                if (!link.isHome) {
+                                                    scrollToSection(e, link.href);
+                                                } else {
+                                                    setIsMobileMenuOpen(false);
+                                                }
+                                            }}
                                             className="block cursor-pointer rounded-lg px-4 py-3 font-medium text-gray-700 transition-colors hover:bg-gray-100 hover:text-[#2547F9]"
                                             initial={{ opacity: 0, x: -20 }}
                                             animate={{ opacity: 1, x: 0 }}
@@ -248,7 +254,11 @@ export default function Navbar({ setting }: NavbarProps) {
                                             Cek Booking
                                         </Button>
                                     </Link>
-                                    <Link href="/admin/login" target="_blank" className="block">
+                                    <Link
+                                        href="/admin/login"
+                                        target="_blank"
+                                        className="block"
+                                    >
                                         <Button className="w-full bg-gradient-to-r from-[#2547F9] to-indigo-600 text-white">
                                             Admin Login
                                         </Button>

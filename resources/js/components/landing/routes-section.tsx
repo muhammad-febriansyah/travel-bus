@@ -102,7 +102,10 @@ Mohon informasi lebih lanjut untuk pemesanan. Terima kasih!`;
         visible: {
             opacity: 1,
             y: 0,
-            transition: { duration: 0.4, ease: 'easeOut' },
+            transition: {
+                duration: 0.5,
+                ease: [0.25, 0.46, 0.45, 0.94] // easeOutQuad - lebih smooth
+            },
         },
     };
 
@@ -142,8 +145,14 @@ Mohon informasi lebih lanjut untuk pemesanan. Terima kasih!`;
                             key={route.id}
                             className="group overflow-hidden rounded-2xl border border-gray-200 bg-white transition-all duration-300 hover:border-[#2547F9]/50 hover:shadow-xl"
                             variants={cardVariants}
-                            whileHover={{ y: -4, scale: 1.02 }}
-                            transition={{ duration: 0.3 }}
+                            whileHover={{
+                                y: -8,
+                                scale: 1.02,
+                                transition: {
+                                    duration: 0.3,
+                                    ease: [0.34, 1.56, 0.64, 1] // easeOutBack - smooth dengan sedikit bounce
+                                }
+                            }}
                         >
                             {/* Header */}
                             <div className="bg-gradient-to-br from-[#2547F9] to-indigo-600 p-6 text-white">

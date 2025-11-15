@@ -5,10 +5,11 @@ namespace App\Http\Controllers;
 use App\Models\Armada;
 use App\Models\Booking;
 use App\Models\Category;
+use App\Models\HeroSlide;
 use App\Models\Route;
 use App\Models\Setting;
+use App\Support\PublicStorageUrl;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
 use Barryvdh\DomPDF\Facade\Pdf;
 
@@ -20,12 +21,8 @@ class HomeController extends Controller
 
         // Add Storage URL to logo and hero image
         if ($setting) {
-            if ($setting->logo) {
-                $setting->logo = Storage::url($setting->logo);
-            }
-            if ($setting->hero_image) {
-                $setting->hero_image = Storage::url($setting->hero_image);
-            }
+            $setting->logo = PublicStorageUrl::make($setting->logo);
+            $setting->hero_image = PublicStorageUrl::make($setting->hero_image);
         }
 
         // Ambil data untuk landing page
@@ -61,7 +58,7 @@ class HomeController extends Controller
                     'capacity' => $armada->capacity,
                     'category' => $armada->category->name,
                     'description' => strip_tags($armada->description),
-                    'image' => $armada->image ? Storage::url($armada->image) : null,
+                    'image' => PublicStorageUrl::make($armada->image),
                 ];
             });
 
@@ -73,8 +70,29 @@ class HomeController extends Controller
             ];
         });
 
+        $heroSlides = HeroSlide::active()
+            ->ordered()
+            ->get()
+            ->map(function ($slide) {
+                return [
+                    'id' => $slide->id,
+                    'title' => $slide->title,
+                    'subtitle' => $slide->subtitle,
+                    'description' => $slide->description,
+                    'image' => PublicStorageUrl::make($slide->image),
+                    'badge_text' => $slide->badge_text,
+                    'primary_button_text' => $slide->primary_button_text,
+                    'primary_button_url' => $slide->primary_button_url,
+                    'secondary_button_text' => $slide->secondary_button_text,
+                    'secondary_button_url' => $slide->secondary_button_url,
+                    'rating_text' => $slide->rating_text,
+                    'rating_value' => $slide->rating_value,
+                ];
+            });
+
         return Inertia::render('Home/Index', [
             'setting' => $setting,
+            'heroSlides' => $heroSlides,
             'routes' => $routes,
             'armadas' => $armadas,
             'categories' => $categories,
@@ -86,9 +104,7 @@ class HomeController extends Controller
         $setting = Setting::first();
 
         if ($setting) {
-            if ($setting->logo) {
-                $setting->logo = Storage::url($setting->logo);
-            }
+            $setting->logo = PublicStorageUrl::make($setting->logo);
         }
 
         return Inertia::render('Home/CekBooking', [
@@ -124,9 +140,7 @@ class HomeController extends Controller
         $setting = Setting::first();
 
         if ($setting) {
-            if ($setting->logo) {
-                $setting->logo = Storage::url($setting->logo);
-            }
+            $setting->logo = PublicStorageUrl::make($setting->logo);
         }
 
         return Inertia::render('Home/BookingDetail', [

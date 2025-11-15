@@ -1,5 +1,5 @@
 import HomeLayout from '@/layouts/home-layout';
-import Hero from '@/components/landing/hero';
+import HeroSlider from '@/components/landing/hero-slider';
 import Features from '@/components/landing/features';
 import RoutesSection from '@/components/landing/routes-section';
 import ArmadaSection from '@/components/landing/armada-section';
@@ -62,13 +62,29 @@ interface Armada {
     image: string | null;
 }
 
+interface HeroSlide {
+    id: number;
+    title: string;
+    subtitle: string | null;
+    description: string | null;
+    image: string | null;
+    badge_text: string | null;
+    primary_button_text: string | null;
+    primary_button_url: string | null;
+    secondary_button_text: string | null;
+    secondary_button_url: string | null;
+    rating_text: string | null;
+    rating_value: number | null;
+}
+
 interface HomeProps {
     setting: Setting;
+    heroSlides: HeroSlide[];
     routes: Route[];
     armadas: Armada[];
 }
 
-export default function Home({ setting, routes, armadas }: HomeProps) {
+export default function Home({ setting, heroSlides, routes, armadas }: HomeProps) {
     return (
         <>
             <Head>
@@ -77,7 +93,7 @@ export default function Home({ setting, routes, armadas }: HomeProps) {
                 {setting.logo && <link rel="icon" type="image/png" href={setting.logo} />}
             </Head>
             <HomeLayout setting={setting}>
-                <Hero setting={setting} />
+                <HeroSlider slides={heroSlides} />
                 <Features features={setting.features} />
                 <RoutesSection routes={routes} whatsappNumber={setting.whatsapp_number} />
                 <ArmadaSection armadas={armadas} routes={routes} whatsappNumber={setting.whatsapp_number} />

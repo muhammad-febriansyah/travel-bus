@@ -2,7 +2,7 @@
 
 namespace App\Filament\Widgets;
 
-use App\Filament\Resources\BookingResource;
+use App\Filament\Resources\Bookings\BookingResource;
 use App\Models\Booking;
 use Filament\Actions\Action as ActionsAction;
 use Filament\Tables;
