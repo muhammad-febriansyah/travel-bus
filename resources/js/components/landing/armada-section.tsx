@@ -94,17 +94,22 @@ Mohon informasi lebih lanjut untuk pemesanan. Terima kasih!`;
         visible: {
             opacity: 1,
             transition: {
-                staggerChildren: 0.15,
+                staggerChildren: 0.1,
+                delayChildren: 0.05,
             },
         },
     };
 
     const cardVariants = {
-        hidden: { opacity: 0, y: 20 },
+        hidden: { opacity: 0, y: 30, scale: 0.95 },
         visible: {
             opacity: 1,
             y: 0,
-            transition: { duration: 0.4, ease: 'easeOut' },
+            scale: 1,
+            transition: {
+                duration: 0.6,
+                ease: [0.25, 0.46, 0.45, 0.94] // Custom cubic-bezier for smooth easing
+            },
         },
     };
 
@@ -138,15 +143,14 @@ Mohon informasi lebih lanjut untuk pemesanan. Terima kasih!`;
                     variants={containerVariants}
                     initial="hidden"
                     animate="visible"
-                    viewport={{ once: false, amount: 0.1 }}
                 >
                     {currentArmadas.map((armada) => (
                         <motion.div
                             key={armada.id}
-                            className="group overflow-hidden rounded-2xl border border-gray-200 bg-white transition-all duration-300 hover:border-[#2547F9]/50 hover:shadow-xl"
+                            className="group overflow-hidden rounded-2xl border border-gray-200 bg-white transition-all duration-500 ease-out hover:border-[#2547F9]/50 hover:shadow-2xl hover:-translate-y-2"
                             variants={cardVariants}
-                            whileHover={{ y: -4, scale: 1.01 }}
-                            transition={{ duration: 0.3, ease: 'easeOut' }}
+                            whileHover={{ scale: 1.02 }}
+                            transition={{ duration: 0.5, ease: [0.25, 0.46, 0.45, 0.94] }}
                         >
                             {/* Image */}
                             <div className="relative h-48 overflow-hidden bg-gradient-to-br from-gray-100 to-gray-200">
@@ -154,7 +158,7 @@ Mohon informasi lebih lanjut untuk pemesanan. Terima kasih!`;
                                     <img
                                         src={armada.image}
                                         alt={armada.name}
-                                        className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+                                        className="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-110"
                                     />
                                 ) : (
                                     <div className="flex h-full w-full items-center justify-center bg-gradient-to-br from-[#2547F9]/10 to-indigo-500/10">

@@ -151,7 +151,17 @@ export default function Navbar({ setting }: NavbarProps) {
                         </div>
 
                         {/* Contact & CTA */}
-                        <div className="hidden items-center space-x-4 lg:flex">
+                        <div className="hidden items-center space-x-3 lg:flex">
+                            <Link href="/booking">
+                                <motion.div
+                                    whileHover={{ scale: 1.05 }}
+                                    whileTap={{ scale: 0.95 }}
+                                >
+                                    <Button className="bg-gradient-to-r from-green-600 to-green-700 text-white shadow-lg shadow-green-500/30 hover:shadow-xl hover:shadow-green-500/40">
+                                        Pesan Sekarang
+                                    </Button>
+                                </motion.div>
+                            </Link>
                             <Link href="/cek-booking">
                                 <motion.div
                                     whileHover={{ scale: 1.05 }}
@@ -246,6 +256,11 @@ export default function Navbar({ setting }: NavbarProps) {
                                 </div>
 
                                 <div className="mt-4 space-y-2 border-t border-gray-200 pt-4">
+                                    <Link href="/booking" className="block">
+                                        <Button className="w-full bg-gradient-to-r from-green-600 to-green-700 text-white">
+                                            Pesan Sekarang
+                                        </Button>
+                                    </Link>
                                     <Link href="/cek-booking" className="block">
                                         <Button
                                             variant="outline"

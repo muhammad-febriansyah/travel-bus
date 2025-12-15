@@ -13,7 +13,8 @@ class ListBookings extends ListRecords
     protected function getHeaderActions(): array
     {
         return [
-            CreateAction::make(),
+            // CreateAction disabled - use React Seat Booking instead
+            // CreateAction::make(),
         ];
     }
 }

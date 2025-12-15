@@ -13,6 +13,7 @@ class Armada extends Model
 
     protected $fillable = [
         'category_id',
+        'seat_layout_id',
         'name',
         'vehicle_type',
         'plate_number',
@@ -57,5 +58,48 @@ class Armada extends Model
     public function scopeByCategory($query, $categoryId)
     {
         return $query->where('category_id', $categoryId);
+    }
+
+    /**
+     * Get the seat layout for this armada
+     */
+    public function seatLayout(): BelongsTo
+    {
+        return $this->belongsTo(SeatLayout::class);
+    }
+
+    /**
+     * Get seat map configuration from layout
+     */
+    public function getSeatMapAttribute()
+    {
+        if ($this->seatLayout) {
+            return $this->seatLayout->seat_map_config;
+        }
+
+        return null;
+    }
+
+    /**
+     * Get available seats for a specific date and time
+     */
+    public function getAvailableSeats(string $date, ?string $time = null): array
+    {
+        if (!$this->seatLayout) {
+            return [];
+        }
+
+        $allSeats = $this->seatLayout->seat_numbers;
+        $occupiedSeats = SeatAvailabilityCache::getOccupiedSeats($this->id, $date, $time);
+
+        return array_diff($allSeats, $occupiedSeats);
+    }
+
+    /**
+     * Get total number of seats
+     */
+    public function getTotalSeats(): int
+    {
+        return $this->capacity ?? 0;
     }
 }

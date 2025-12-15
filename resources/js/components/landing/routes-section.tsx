@@ -92,19 +92,21 @@ Mohon informasi lebih lanjut untuk pemesanan. Terima kasih!`;
         visible: {
             opacity: 1,
             transition: {
-                staggerChildren: 0.1,
+                staggerChildren: 0.08,
+                delayChildren: 0.05,
             },
         },
     };
 
     const cardVariants = {
-        hidden: { opacity: 0, y: 20 },
+        hidden: { opacity: 0, y: 30, scale: 0.95 },
         visible: {
             opacity: 1,
             y: 0,
+            scale: 1,
             transition: {
-                duration: 0.5,
-                ease: [0.25, 0.46, 0.45, 0.94] // easeOutQuad - lebih smooth
+                duration: 0.6,
+                ease: [0.25, 0.46, 0.45, 0.94] // Custom cubic-bezier for smooth easing
             },
         },
     };
@@ -143,14 +145,13 @@ Mohon informasi lebih lanjut untuk pemesanan. Terima kasih!`;
                     {routes.map((route, index) => (
                         <motion.div
                             key={route.id}
-                            className="group overflow-hidden rounded-2xl border border-gray-200 bg-white transition-all duration-300 hover:border-[#2547F9]/50 hover:shadow-xl"
+                            className="group overflow-hidden rounded-2xl border border-gray-200 bg-white transition-all duration-500 ease-out hover:border-[#2547F9]/50 hover:shadow-2xl hover:-translate-y-2"
                             variants={cardVariants}
                             whileHover={{
-                                y: -8,
                                 scale: 1.02,
                                 transition: {
-                                    duration: 0.3,
-                                    ease: [0.34, 1.56, 0.64, 1] // easeOutBack - smooth dengan sedikit bounce
+                                    duration: 0.5,
+                                    ease: [0.25, 0.46, 0.45, 0.94]
                                 }
                             }}
                         >

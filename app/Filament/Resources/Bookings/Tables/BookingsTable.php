@@ -4,14 +4,16 @@ namespace App\Filament\Resources\Bookings\Tables;
 
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
-use Filament\Actions\EditAction;
 use Filament\Actions\ViewAction;
+use Filament\Actions\EditAction;
+use Filament\Actions\Action;
 use Filament\Forms;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Filters\Filter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
+use Filament\Notifications\Notification;
 
 class BookingsTable
 {
@@ -109,17 +111,66 @@ class BookingsTable
                         return $query
                             ->when(
                                 $data['travel_from'],
-                                fn (Builder $query, $date): Builder => $query->whereDate('travel_date', '>=', $date),
+                                fn(Builder $query, $date): Builder => $query->whereDate('travel_date', '>=', $date),
                             )
                             ->when(
                                 $data['travel_to'],
-                                fn (Builder $query, $date): Builder => $query->whereDate('travel_date', '<=', $date),
+                                fn(Builder $query, $date): Builder => $query->whereDate('travel_date', '<=', $date),
                             );
                     }),
             ])
             ->recordActions([
                 ViewAction::make(),
-                EditAction::make(),
+
+                // Quick action: Konfirmasi Booking
+                Action::make('confirm')
+                    ->label('Konfirmasi')
+                    ->icon('heroicon-o-check')
+                    ->color('primary')
+                    ->size('sm')
+                    ->button()
+                    ->visible(fn($record) => $record->status === 'pending')
+                    ->requiresConfirmation()
+                    ->modalHeading('Konfirmasi Booking?')
+                    ->modalDescription(fn($record) => "Konfirmasi booking {$record->booking_code} untuk {$record->customer->name}?")
+                    ->action(function ($record) {
+                        $record->update(['status' => 'confirmed']);
+
+                        Notification::make()
+                            ->success()
+                            ->title('Booking Dikonfirmasi')
+                            ->body("Booking {$record->booking_code} berhasil dikonfirmasi.")
+                            ->send();
+                    }),
+
+                // Quick action: Tandai Selesai
+                Action::make('complete')
+                    ->label('Selesai')
+                    ->icon('heroicon-o-check-circle')
+                    ->color('success')
+                    ->size('sm')
+                    ->button()
+                    ->visible(fn($record) => in_array($record->status, ['pending', 'confirmed']))
+                    ->requiresConfirmation()
+                    ->modalHeading('Tandai Trip Selesai?')
+                    ->modalDescription(fn($record) => "Trip untuk booking {$record->booking_code} sudah sampai tujuan? Kursi akan dilepas dan tersedia untuk booking lain.")
+                    ->action(function ($record) {
+                        $record->update(['status' => 'completed']);
+
+                        // Invalidate cache to release seats
+                        \App\Models\SeatAvailabilityCache::where('armada_id', $record->armada_id)
+                            ->where('travel_date', $record->travel_date->format('Y-m-d'))
+                            ->delete();
+
+                        Notification::make()
+                            ->success()
+                            ->title('Trip Selesai')
+                            ->body("Booking {$record->booking_code} selesai. Kursi sudah tersedia untuk booking lain.")
+                            ->send();
+                    }),
+
+                // EditAction disabled - use React Seat Booking instead
+                // EditAction::make(),
             ])
             ->toolbarActions([
                 BulkActionGroup::make([

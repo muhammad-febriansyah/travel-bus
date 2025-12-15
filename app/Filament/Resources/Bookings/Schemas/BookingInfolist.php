@@ -61,6 +61,22 @@ class BookingInfolist
                     ])
                     ->columns(2),
 
+                Section::make('Kursi Terpilih')
+                    ->schema([
+                        TextEntry::make('seatAssignments')
+                            ->label('Nomor Kursi')
+                            ->formatStateUsing(fn ($record) =>
+                                $record->seatAssignments && $record->seatAssignments->count() > 0
+                                    ? $record->seatAssignments->pluck('seat_number')->sort()->implode(', ')
+                                    : 'Belum ada kursi dipilih'
+                            )
+                            ->badge()
+                            ->color('success')
+                            ->columnSpanFull(),
+                    ])
+                    ->visible(fn ($record) => $record->armada && $record->armada->seatLayout)
+                    ->collapsible(),
+
                 Section::make('Harga')
                     ->schema([
                         TextEntry::make('price_per_person')

@@ -19,17 +19,22 @@ export default function Features({ features: propFeatures }: FeaturesProps) {
         visible: {
             opacity: 1,
             transition: {
-                staggerChildren: 0.1,
+                staggerChildren: 0.08,
+                delayChildren: 0.05,
             },
         },
     };
 
     const itemVariants = {
-        hidden: { opacity: 0, y: 30 },
+        hidden: { opacity: 0, y: 30, scale: 0.95 },
         visible: {
             opacity: 1,
             y: 0,
-            transition: { duration: 0.5, ease: 'easeOut' },
+            scale: 1,
+            transition: {
+                duration: 0.6,
+                ease: [0.25, 0.46, 0.45, 0.94] // Custom cubic-bezier for smooth easing
+            },
         },
     };
 
@@ -123,9 +128,15 @@ export default function Features({ features: propFeatures }: FeaturesProps) {
                         return (
                             <motion.div
                                 key={index}
-                                className="group relative overflow-hidden rounded-2xl bg-gradient-to-br from-white to-gray-50 p-8 shadow-lg transition-all hover:shadow-2xl"
+                                className="group relative overflow-hidden rounded-2xl bg-gradient-to-br from-white to-gray-50 p-8 shadow-lg transition-all duration-500 ease-out hover:shadow-2xl hover:-translate-y-2"
                                 variants={itemVariants}
-                                whileHover={{ y: -8 }}
+                                whileHover={{
+                                    scale: 1.02,
+                                    transition: {
+                                        duration: 0.5,
+                                        ease: [0.25, 0.46, 0.45, 0.94]
+                                    }
+                                }}
                             >
                                 {/* Background Gradient on Hover */}
                                 <div className="absolute inset-0 bg-gradient-to-br from-[#2547F9]/5 to-indigo-500/5 opacity-0 transition-opacity group-hover:opacity-100" />

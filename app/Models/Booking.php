@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Str;
 
 class Booking extends Model
@@ -157,5 +158,43 @@ class Booking extends Model
         );
 
         return "https://wa.me/{$phone}?text={$message}";
+    }
+
+    /**
+     * Get the seat assignments for this booking
+     */
+    public function seatAssignments(): HasMany
+    {
+        return $this->hasMany(SeatAssignment::class);
+    }
+
+    /**
+     * Get array of assigned seat numbers
+     */
+    public function getAssignedSeatsAttribute(): array
+    {
+        return $this->seatAssignments->pluck('seat_number')->toArray();
+    }
+
+    /**
+     * Assign a seat to this booking
+     */
+    public function assignSeat(string $seatNumber, ?string $passengerName = null): SeatAssignment
+    {
+        return $this->seatAssignments()->create([
+            'seat_number' => $seatNumber,
+            'passenger_name' => $passengerName,
+            'status' => $this->status === 'confirmed' ? 'confirmed' : 'reserved',
+        ]);
+    }
+
+    /**
+     * Release a seat from this booking
+     */
+    public function releaseSeat(string $seatNumber): void
+    {
+        $this->seatAssignments()
+            ->where('seat_number', $seatNumber)
+            ->delete();
     }
 }

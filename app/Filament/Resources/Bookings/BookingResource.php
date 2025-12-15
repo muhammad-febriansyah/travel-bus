@@ -64,9 +64,20 @@ class BookingResource extends Resource
     {
         return [
             'index' => ListBookings::route('/'),
-            'create' => CreateBooking::route('/create'),
             'view' => ViewBooking::route('/{record}'),
-            'edit' => EditBooking::route('/{record}/edit'),
+            // Create & Edit disabled - use React Seat Booking instead
+            // 'create' => CreateBooking::route('/create'),
+            // 'edit' => EditBooking::route('/{record}/edit'),
         ];
+    }
+
+    public static function canCreate(): bool
+    {
+        return false;
+    }
+
+    public static function canEdit($record): bool
+    {
+        return false;
     }
 }

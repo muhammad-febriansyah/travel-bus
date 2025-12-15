@@ -107,31 +107,18 @@ export default function ArmadaDetailModal({
                     {/* Action Buttons */}
                     <div className="space-y-3 border-t pt-6">
                         <p className="text-center text-sm text-gray-600">
-                            Pilih cara pemesanan yang Anda inginkan:
+                            Hubungi kami untuk pemesanan:
                         </p>
-                        <div className="grid gap-3 sm:grid-cols-2">
-                            <Button
-                                onClick={onWhatsApp}
-                                className="h-auto flex-col gap-2 bg-[#25D366] py-4 text-white hover:bg-[#20BA5A]"
-                            >
-                                <MessageCircle className="h-6 w-6" />
-                                <div className="text-center">
-                                    <div className="font-semibold">Chat via WhatsApp</div>
-                                    <div className="text-xs opacity-90">Cepat & Mudah</div>
-                                </div>
-                            </Button>
-
-                            <Button
-                                onClick={onBookingForm}
-                                className="h-auto flex-col gap-2 bg-[#2547F9] py-4 text-white hover:bg-[#1d3acc]"
-                            >
-                                <FileText className="h-6 w-6" />
-                                <div className="text-center">
-                                    <div className="font-semibold">Form Booking</div>
-                                    <div className="text-xs opacity-90">Pemesanan Formal</div>
-                                </div>
-                            </Button>
-                        </div>
+                        <Button
+                            onClick={onWhatsApp}
+                            className="h-auto w-full flex-col gap-2 bg-[#25D366] py-4 text-white hover:bg-[#20BA5A]"
+                        >
+                            <MessageCircle className="h-6 w-6" />
+                            <div className="text-center">
+                                <div className="font-semibold">Chat via WhatsApp</div>
+                                <div className="text-xs opacity-90">Cepat & Mudah</div>
+                            </div>
+                        </Button>
 
                         <Button
                             type="button"
